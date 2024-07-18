@@ -1,7 +1,29 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { SidebarComponent } from './layout/sidebar/sidebar.component';
+import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 
-const routes: Routes = [];
+const routes: Routes = [
+  {
+    path: 'auth',
+    loadChildren: () => import('./authentication/authentication.module').then((m) => m.AuthenticationModule),
+  },
+  {
+    path: '',
+    component: SidebarComponent,
+    loadChildren: () => import('./pages/pages.module').then(m => m.PagesModule),
+  },
+  // { 
+  //   path: '', 
+  //   redirectTo: 'auth/login', 
+  //   pathMatch: 'full' 
+  // },
+  { 
+    path: '**', 
+    pathMatch: 'full' ,
+    component:PageNotFoundComponent
+  }
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

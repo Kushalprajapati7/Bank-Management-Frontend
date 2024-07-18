@@ -1,0 +1,99 @@
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <h2 class="mt-4 mb-4">User List</h2>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <i class="fa-solid fa-plus"></i> Add New User
+        </button>
+
+    </div>
+    <div class="table-responsive card p-3">
+
+        <table class="table table-bordered">
+            <thead class="table-info">
+                <tr>
+                    <th>No.</th>
+                    <th>User ID</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of userList; let i=index">
+                    <td>{{i+1}}</td>
+                    <td>{{user._id}}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.role }}</td>
+                    <td>
+                        <button class="btn btn-warning btn-sm me-2" (click)="updateUser(user)" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal"><i class="fa-solid fa-user-pen me-2"></i>Update</button>
+                        <button class="btn btn-danger btn-sm" (click)="deleteUser(user)"><i
+                                class="fas fa-trash me-2"></i>Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- <div class="container">
+    <h2 class="mt-4 mb-4">User List</h2>
+    <ag-grid-angular
+      style="width: 100%; height: 500px;"
+      class="ag-theme-alpine"
+      [rowData]="userList"
+      [columnDefs]="columnDefs"
+      [defaultColDef]="defaultColDef"
+      [pagination]="true"
+      [paginationPageSize]="10"
+      frameworkComponents="actionsRenderer"
+    >
+    </ag-grid-angular>
+  </div>
+   -->
+  
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add New User Here..</h5>
+                <button type="button" class="btn-close" #userFormModel data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+                    <div class="form-group mt-3">
+                        <label for="userName">User Name</label>
+                        <input type="text" formControlName="userName" class="form-control" id="userName"
+                            placeholder="Enter UserName" />
+                        <div *ngIf="hasError('userName', 'required')" class="text-danger">*UserName is required</div>
+                        <div *ngIf="hasError('userName', 'minlength')" class="text-danger">*UserName must be at least 3
+                            characters long</div>
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="email">E-mail</label>
+                        <input type="text" formControlName="email" class="form-control" id="email"
+                            placeholder="Enter E-mail" />
+                        <div *ngIf="hasError('email', 'required')" class="text-danger">*E-mail is required</div>
+                        <div *ngIf="hasError('email', 'email')" class="text-danger">*Invalid email format</div>
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="password">Password</label>
+                        <input type="password" formControlName="password" class="form-control" id="password"
+                            placeholder="Password" />
+                        <div *ngIf="hasError('password', 'required')" class="text-danger">*Password is required</div>
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="role" class="me-2">Role:</label>
+                        <select id="role" class="form-control" formControlName="role">
+                            <option value="user">User</option>
+                        </select>
+                        <div *ngIf="hasError('role', 'required')" class="text-danger">*Role is required</div>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-4 w-100">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,12 @@
+<ng-template ngxPermissionsOnly="admin">
+    <div class="d-flex justify-content-center align-items-center">
+        <i class="fa-solid fa-user-tie fa-2xl me-4" style="color: #00adb5;"></i>
+        <h1>Welcome, {{userName}}</h1>
+    </div>
+</ng-template>
+<ng-template ngxPermissionsOnly="user">
+    <div class="d-flex justify-content-center align-items-center">
+        <i class="fa-solid fa-user fa-2xl me-4" style="color: #00adb5;"></i>
+        <h1>Welcome, {{userName}}</h1>
+    </div>
+</ng-template>

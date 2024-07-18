@@ -1,0 +1,49 @@
+<!-- <div class="container">
+    <h2 class="mb-4">Transaction List</h2>
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead class="table-info">
+                <tr>
+                    <th>No.</th>
+                    <th>Sender Username</th>
+                    <th>Sender's A/C No.</th>
+                    <th>Sender's A/C Type</th>
+                    <th>Receiver Username</th>
+                    <th>Receiver's A/C No.</th>
+                    <th>Receiver's A/C Type</th>
+                    <th>Amount</th>
+                    <th>Transaction Type</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let transaction of transactionList index as i">
+                    <td>{{i+1}}</td>
+                    <td>{{ transaction.transactionDetails.sourceUsername }}</td>
+                    <td>{{ transaction.transactionDetails.sourceAccountNumber }}</td>
+                    <td>{{ transaction.transactionDetails.sourceAccountType }}</td>
+                    <td>{{ transaction.transactionDetails.destinationUsername }}</td>
+                    <td>{{ transaction.transactionDetails.destinationAccountNumber }}</td>
+                    <td>{{ transaction.transactionDetails.destinationAccountType }}</td>
+                    <td>{{ transaction.transactionDetails.amount }}</td>
+                    <td>{{ transaction.transactionDetails.type }}</td>
+                    <td>{{ transaction.transactionDetails.description }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div> -->
+
+<div class="container-fluid">
+    <h2 class="mb-4 text-center">Transaction List</h2>
+    <ag-grid-angular
+    style="width: 100%; height: 750px;"
+    [class]="themeClass"
+    [rowData]="transactionList"
+    [columnDefs]="columnDefs"
+    [defaultColDef]="defaultColDef"
+    [pagination]="true"
+    [paginationPageSize]="10">
+</ag-grid-angular>
+
+</div>

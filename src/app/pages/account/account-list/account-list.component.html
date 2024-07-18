@@ -1,0 +1,255 @@
+<ng-template ngxPermissionsOnly="admin">
+    <div class="container-fluid">
+        <h2 class="mb-4 text-center">Account List</h2>
+        <ag-grid-angular style="width: 100%; height: 750px;" [class]="themeClass" [rowData]="accountList"
+            [columnDefs]="columnDefs" [defaultColDef]="defaultColDef" [pagination]="true" [paginationPageSize]="10">
+        </ag-grid-angular>
+
+    </div>
+
+</ng-template>
+
+<ng-template ngxPermissionsOnly="user">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <h2 class="mt-4 mb-4">User Account List</h2>
+            <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#accountModal">
+                <i class="fa-solid fa-plus"></i> Create New Account
+            </button>
+
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead class="table-info">
+                    <tr>
+                        <th>No.</th>
+                        <th>Account Number</th>
+                        <th>Account Type</th>
+                        <th>Balance</th>
+                        <th>Created At</th>
+                        <th>Make Transaction</th>
+                        <th>Transaction</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let account of userAccountList; let i=index">
+                        <td>{{ i + 1 }}</td>
+                        <td>{{ account.accountNumber }}</td>
+                        <td>{{ account.accountType|titlecase }}</td>
+                        <td>{{ account.balance|currency:'INR' }}</td>
+                        <td>{{ account.createdAt | date: 'medium' }}</td>
+                        <td>
+                            <button type="button" class="btn btn-outline-info" data-bs-toggle="modal"
+                                data-bs-target="#newTransactionModal" (click)="btnToOpenTransactionModel(account)">
+                                <i class="fa-solid fa-money-bill-transfer me-2"></i>Perform Transaction
+                            </button>
+                        </td>
+                        <td>
+                            <i class="fa-solid fa-eye me-2 btn btn-outline-success" data-bs-toggle="modal"
+                                data-bs-target="#transactionModal" (click)="viewTransaction(account)"></i>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</ng-template>
+
+
+
+<!-- <div class="modal fade" id="transactionModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="container">
+        <div class="modal-dialog mw-100">
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Your Transaction List..</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead class="table-info">
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Transaction Date/Time</th>
+                                    <th>Transaction Type</th>
+                                    <th>Amount</th>
+                                    <th>Description</th>
+                                    <th>Sender's Username</th>
+                                    <th>Sender's A/C No.</th>
+                                    <th>Sender's A/C Type</th>
+                                    <th>Receiver's Username</th>
+                                    <th>Receiver's A/C No.</th>
+                                    <th>Receiver's A/C Type</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let transaction of transactionPerAccount; let i=index">
+                                    <td>{{ i + 1 }}</td>
+                                    <td>{{ transaction.details?.TransactionDate | date: 'medium' }}</td>
+                                    <td>{{ transaction.details?.type }}</td>
+                                    <td>{{ transaction.details?.amount | currency:'INR' }}</td>
+                                    <td>{{ transaction.details?.description }}</td>
+                                    <td>{{ transaction.details?.sourceUsername }}</td>
+                                    <td>{{ transaction.details?.sourceAccountNumber }}</td>
+                                    <td>{{ transaction.details?.sourceAccountType }}</td>
+                                    <td>{{ transaction.details?.destinationUsername }}</td>
+                                    <td>{{ transaction.details?.destinationAccountNumber }}</td>
+                                    <td>{{ transaction.details?.destinationAccountType }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div *ngIf="transactionPerAccount.length==0" class="text-center">
+                            <h4>No transactions found</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+<div class="modal fade" id="transactionModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="container">
+        <div class="modal-dialog mw-100">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Your Transaction List..</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead class="table-info">
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Transaction Date/Time</th>
+                                    <th>Transaction Type</th>
+                                    <th>Amount</th>
+                                    <th>Description</th>
+                                    <th>Sender's Username</th>
+                                    <th>Sender's A/C No.</th>
+                                    <th>Sender's A/C Type</th>
+                                    <th>Receiver's Username</th>
+                                    <th>Receiver's A/C No.</th>
+                                    <th>Receiver's A/C Type</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let transaction of transactionPerAccount; let i = index" [ngClass]="{
+                                        'table-success': transaction.details?.type === 'deposit',
+                                        'table-danger': transaction.details?.type === 'withdrawal',
+                                        'table-info': transaction.details?.type === 'transfer'
+                                    }">
+                                    <td>{{ i + 1 }}</td>
+                                    <td>{{ transaction.details?.TransactionDate | date: 'medium' }}</td>
+                                    <td>{{ transaction.details?.type }}</td>
+                                    <td>{{ transaction.details?.amount | currency: 'INR' }}</td>
+                                    <td>{{ transaction.details?.description }}</td>
+                                    <td>{{ transaction.details?.sourceUsername }}</td>
+                                    <td>{{ transaction.details?.sourceAccountNumber }}</td>
+                                    <td>{{ transaction.details?.sourceAccountType }}</td>
+                                    <td>{{ transaction.details?.destinationUsername }}</td>
+                                    <td>{{ transaction.details?.destinationAccountNumber }}</td>
+                                    <td>{{ transaction.details?.destinationAccountType }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div *ngIf="transactionPerAccount.length === 0" class="text-center">
+                            <h4>No transactions found</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="accountModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add New Account</h5>
+                <button type="button" class="btn-close" #accountModalClose data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="accountForm" (ngSubmit)="addNewAccount()">
+                    <div class="form-group mt-3">
+                        <label for="accountType">Select Account Type</label>
+                        <select id="accountType" class="form-control" formControlName="accountType">
+                            <option disabled selected value>Select Account Type</option>
+                            <option value="savings">Savings</option>
+                            <option value="checking">Checking</option>
+                        </select>
+                        <div *ngIf="hasError('accountType', 'required')" class="text-danger">*accountType is required
+                        </div>
+                        <div *ngIf="hasError('accountType', 'minlength')" class="text-danger">*accountType must be at
+                            least 3
+                            characters long</div>
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="balance">Add Balance</label>
+                        <input type="number" formControlName="balance" class="form-control" id="balance"
+                            placeholder="Enter Initial Balance" />
+                        <div *ngIf="hasError('balance', 'required')" class="text-danger">*balance is required</div>
+                    </div>
+                    <button type="submit" class="btn btn-outline-success mt-4 w-100">Add Account</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="newTransactionModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add New Transaction</h5>
+                <button type="button" class="btn-close" #transactionModelClose data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="transactionForm" (ngSubmit)="makeTransaction()">
+
+                    <div class="form-group mt-3">
+                        <label for="toAccount">To Account</label>
+                        <input type="text" formControlName="toAccount" class="form-control" id="toAccount"
+                            placeholder="Enter To Account" />
+                        <div *ngIf="hasError('toAccount', 'required')" class="text-danger">*To Account is required</div>
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="transactionType">Select Transaction Type</label>
+                        <select id="transactionType" class="form-control" formControlName="transactionType">
+                            <option disabled value selected>Select Account Type</option>
+                            <option value="deposit">Deposit</option>
+                            <option value="withdrawal">Withdrawal</option>
+                            <option value="transfer">Transfer</option>
+                        </select>
+                        <div *ngIf="hasError('transactionType', 'required')" class="text-danger">*accountType is
+                            required
+                        </div>
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="amount">Amount</label>
+                        <input type="number" formControlName="amount" class="form-control" id="amount"
+                            placeholder="Enter Amount" />
+                        <div *ngIf="hasError('amount', 'required')" class="text-danger">*Amount is required</div>
+                    </div>
+                    <div class="form-group mt-3">
+                        <label for="description">Description</label>
+                        <textarea formControlName="description" class="form-control" id="description" rows="3"
+                            placeholder="Enter Description"></textarea>
+                        <div *ngIf="hasError('description', 'required')" class="text-danger">*Description is required
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-4 w-100">Make Transaction</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
