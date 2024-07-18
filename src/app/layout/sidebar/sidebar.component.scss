@@ -1,119 +1,9 @@
-// $primary-bg: #222831; // Dark Background
-// $secondary-bg: #393e46; // Darker Background
-// $highlight-color: #00adb5; // Accent Color
-// $text-color: #eeeeee; // Light Text Color
 
-// html,
-// body,
-// #wrapper,
-// #page-content-wrapper {
-//   height: 100%;
-//   overflow: hidden;
-// }
 
-// #wrapper {
-//   display: flex;
-//   align-items: stretch;
-// }
-
-// #sidebar-wrapper {
-//   background-color: $primary-bg;
-//   min-height: 100vh;
-//   margin-left: -15rem;
-//   transition: margin 0.25s ease-out;
-// }
-
-// #sidebar-wrapper .sidebar-heading {
-//   padding: 1rem 1.5rem;
-//   font-size: 1.5rem;
-//   color: $text-color;
-//   background-color: $secondary-bg;
-//   text-align: center;
-// }
-
-// #sidebar-wrapper .list-group {
-//   width: 15rem;
-//   padding: 1rem 0;
-// }
-
-// #sidebar-wrapper .list-group-item {
-//   background-color: $primary-bg;
-//   color: $text-color;
-//   border: none;
-//   padding: 1rem 1.5rem;
-//   display: flex;
-//   align-items: center;
-// }
-
-// #sidebar-wrapper .list-group-item:hover {
-//   background-color: $highlight-color;
-//   color: $primary-bg;
-// }
-
-// #sidebar-wrapper .list-group-item i {
-//   margin-right: 10px;
-// }
-
-// #page-content-wrapper {
-//   flex: 1;
-//   overflow-y: auto;
-//   color: $primary-bg;
-// }
-
-// #wrapper.toggled #sidebar-wrapper {
-//   margin-left: 0;
-// }
-
-// .navbar {
-//   background-color: $secondary-bg !important;
-// }
-
-// .navbar-toggler {
-//   border-color: $highlight-color !important;
-// }
-
-// .navbar-toggler-icon {
-//   background-image: none;
-//   color: $highlight-color;
-// }
-
-// .navbar-nav .nav-link {
-//   color: $text-color !important;
-// }
-
-// .navbar-nav .nav-link:hover {
-//   color: $highlight-color !important;
-// }
-
-// .btn-outline-danger {
-//   color: $highlight-color !important;
-//   border-color: $highlight-color !important;
-// }
-
-// .btn-outline-danger:hover {
-//   background-color: $highlight-color !important;
-//   color: $primary-bg !important;
-// }
-
-// @media (min-width: 768px) {
-//   #sidebar-wrapper {
-//     margin-left: 0;
-//   }
-
-//   #page-content-wrapper {
-//     min-width: 0;
-//     width: 100%;
-//   }
-
-//   #wrapper.toggled #sidebar-wrapper {
-//     margin-left: -15rem;
-//   }
-// }
-
-$primary-bg: #222831; // Dark Background
-$secondary-bg: #393e46; // Darker Background
-$highlight-color: #00adb5; // Accent Color
-$text-color: #eeeeee; // Light Text Color
+$primary-bg: #222831; 
+$secondary-bg: #393e46; 
+$highlight-color: #00adb5;
+$text-color: #eeeeee; 
 
 html,
 body,
@@ -164,6 +54,7 @@ body,
 
 #sidebar-wrapper .list-group-item i {
   margin-right: 10px;
+  cursor: pointer!important;
 }
 
 #page-content-wrapper {
@@ -191,6 +82,7 @@ body,
 
 .navbar-nav .nav-link {
   color: $text-color !important;
+  cursor: pointer!important;
 }
 
 .navbar-nav .nav-link:hover {
@@ -209,7 +101,6 @@ body,
 
 #menu-toggle {
   display: block;
-  // position: fixed;
   top: 10px;
   left: 10px;
   z-index: 1001;

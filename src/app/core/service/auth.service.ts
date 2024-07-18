@@ -1,3 +1,4 @@
+
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
@@ -9,15 +10,11 @@ import { map, Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-  private token: string | null = null;
   private tokenKey = 'auth_token';
   private roleKey = 'userRole';
-  private isAuthenticated: boolean = false;
-  private userRole: string = '';
-  private userName: string = ''
-  private userId: string = ''
-  private userNameKey = 'userName'
-  private userIdKey = 'userId'
+  private userNameKey = 'userName';
+  private userIdKey = 'userId';
+  isAuthenticated: boolean = false;
   constructor(
     private _http: HttpClient,
     private _router: Router,
@@ -31,50 +28,54 @@ export class AuthService {
   login(email: string, password: string): Observable<any> {
     return this._http.post<{ token: string, role: string, userName: string, userId: string }>(`auth/login`, { email, password }).pipe(
       map(response => {
-        this.token = response.token;
         this.isAuthenticated = true;
-        this.userRole = response.role;
-        this.userName = response.userName;
-        this.userId = response.userId;
-        localStorage.setItem(this.tokenKey, this.token);
-        localStorage.setItem(this.roleKey, this.userRole);
-        localStorage.setItem(this.userNameKey, this.userName);
-        localStorage.setItem(this.userIdKey, this.userId);
-        this._permissionsService.loadPermissions([this.userRole]);
+        localStorage.setItem(this.tokenKey, response.token);
+        localStorage.setItem(this.roleKey, response.role);
+        localStorage.setItem(this.userNameKey, response.userName);
+        localStorage.setItem(this.userIdKey, response.userId);
+        this._permissionsService.loadPermissions([response.role]);
+        // if(response.role === 'admin'){
+        //   this._router.navigate(['/dashboard'])
+        // }
+        // else{
+        // this._router.navigate(['/home']);
+        // }
         return response;
       })
     )
   }
 
-  getRole() {
-    return localStorage.getItem(this.roleKey)
+  getRole(): string | null {
+    return localStorage.getItem(this.roleKey);
   }
+
   logout(): void {
-    this.token = null;
     localStorage.removeItem(this.tokenKey);
     localStorage.removeItem(this.roleKey);
+    localStorage.removeItem(this.userNameKey);
+    localStorage.removeItem(this.userIdKey);
     this._router.navigate(['auth/login']);
   }
 
   getToken(): string | null {
-    return this.token;
+    return localStorage.getItem(this.tokenKey);
   }
 
   isLoggedIn(): boolean {
-    return this.isAuthenticated, !!this.token;
+    return !!this.getToken();
   }
 
   getHeaders(): HttpHeaders {
+    const token = this.getToken();
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${this.token}`
+      'Authorization': `Bearer ${token}`
     });
     return headers;
   }
+
   isAdmin(): boolean {
-    const storedRole = localStorage.getItem(this.roleKey);
+    const storedRole = this.getRole();
     return storedRole === 'admin';
   }
-
-
 }

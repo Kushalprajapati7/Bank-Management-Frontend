@@ -24,8 +24,6 @@ export class RegisterComponent {
       password: ['', [Validators.required]],
       role: ['', [Validators.required]]
     })
-
-    // this.onSubmit();
   }
 
   onSubmit() {
@@ -42,13 +40,11 @@ export class RegisterComponent {
       role: this.registerForm.get('role')?.value,
     }
     this._authService.register(user).subscribe(
-      (response) => {
-        console.log('Register Done');
-        
+      (response) => {        
         this._router.navigate(['auth/login'])
       },
       error => {
-        console.log(error);
+        console.error(error);
       }
 
     )

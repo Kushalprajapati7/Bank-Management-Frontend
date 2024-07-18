@@ -9,8 +9,7 @@ import { LayoutModule } from './layout/layout.module';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { ErrorInterceptor } from './core/interceptor/error.interceptor';
 import { RouterModule } from '@angular/router';
-import { AgGridAngular, AgGridModule } from 'ag-grid-angular';
-import { AuthGuard } from './core/guards/auth.guard';
+import { ActionsRendererComponent } from './shared/action-render/action-render.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +23,6 @@ import { AuthGuard } from './core/guards/auth.guard';
     AuthenticationModule,
     NgxPermissionsModule.forRoot(),
     RouterModule,
-
 
   ],
   providers: [

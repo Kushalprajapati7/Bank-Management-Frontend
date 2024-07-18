@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { SidebarComponent } from './layout/sidebar/sidebar.component';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
+import { NoAuthGuard } from './core/guards/no-auth.guard';
 
 const routes: Routes = [
   {
@@ -13,15 +14,10 @@ const routes: Routes = [
     component: SidebarComponent,
     loadChildren: () => import('./pages/pages.module').then(m => m.PagesModule),
   },
-  // { 
-  //   path: '', 
-  //   redirectTo: 'auth/login', 
-  //   pathMatch: 'full' 
-  // },
-  { 
-    path: '**', 
-    pathMatch: 'full' ,
-    component:PageNotFoundComponent
+  {
+    path: '**',
+    pathMatch: 'full',
+    component: PageNotFoundComponent
   }
 ];
 

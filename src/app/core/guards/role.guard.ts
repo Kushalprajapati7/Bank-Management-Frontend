@@ -1,4 +1,4 @@
-// role.guard.ts
+
 
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
@@ -10,11 +10,11 @@ import { AuthService } from '../service/auth.service';
 })
 export class RoleGuard implements CanActivate {
 
-  constructor(private _authService: AuthService, private router: Router) {}
+  constructor(private _authService: AuthService, private router: Router) { }
 
   canActivate(): boolean {
     if (this._authService.isAdmin()) {
-      return true;  
+      return true;
     } else {
       Swal.fire({
         position: "center",
@@ -23,8 +23,10 @@ export class RoleGuard implements CanActivate {
         showConfirmButton: false,
         timer: 1000
       });
-      this.router.navigate(['/']);  
-      return false; 
+      this.router.navigate(['/']);
+      return false;
     }
   }
 }
+
+

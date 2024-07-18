@@ -3,7 +3,19 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IUser } from 'src/app/core/interface/IUser';
 import { UserService } from 'src/app/core/service/user.service';
+import { ActionsRendererComponent } from 'src/app/shared/action-render/action-render.component';
 import Swal from 'sweetalert2';
+import {
+  ColDef,
+  ColGroupDef,
+  ColumnResizedEvent,
+  GridApi,
+  GridOptions,
+  SizeColumnsToContentStrategy,
+  SizeColumnsToFitGridStrategy,
+  SizeColumnsToFitProvidedWidthStrategy,
+  createGrid,
+} from "ag-grid-community";
 
 @Component({
   selector: 'app-user-list',
@@ -17,12 +29,45 @@ export class UserListComponent implements OnInit {
   isUpdating: boolean = false;
   currentUserId: string | null = null;
   @ViewChild('userFormModel') userFormModel!: ElementRef;
+  defaultColDef: any;
+  columnDefs: any;
+  public themeClass: string = "ag-theme-alpine";
+  frameworkComponents: any
 
   constructor(
     private _userService: UserService,
     private _router: Router,
     private _fb: FormBuilder
-  ) { }
+  ) {
+    this.frameworkComponents = {
+      cellRenderer: ActionsRendererComponent,
+    };
+
+    this.columnDefs = [
+      { headerName: 'No.', valueGetter: "node.rowIndex + 1", width: 50 },
+      { headerName: 'User ID', field: '_id', width: 305 },
+      { headerName: 'Username', field: 'username', width: 150 },
+      { headerName: 'Email', field: 'email', width: 350 },
+      { headerName: 'Role', field: 'role', width: 140 },
+      {
+        headerName: 'Action',
+        cellRenderer: 'cellRenderer',
+        cellRendererParams: {
+          onEdit: this.updateUser.bind(this),
+          onDelete: this.deleteUser.bind(this)
+        },
+        width: 250
+
+      }
+    ];
+
+    this.defaultColDef = {
+      minWidth: 100,
+      filter: true,
+      sortable: true,
+      resizable: true
+    };
+  }
 
   ngOnInit(): void {
     this.userForm = this._fb.group({
@@ -40,6 +85,21 @@ export class UserListComponent implements OnInit {
         this.userList = response;
       }, (error) => {
         console.error(error);
+      }
+    );
+  }
+  loadUserDetails(userId: string) {
+    this._userService.getUserById(userId).subscribe(
+      (user) => {
+        this.userForm.patchValue({
+          userName: user.username,
+          email: user.email,
+          password: '',
+          role: user.role
+        });
+      },
+      (error) => {
+        console.error('Error loading User details:', error);
       }
     );
   }
@@ -81,28 +141,15 @@ export class UserListComponent implements OnInit {
       }
     });
   }
+
+
   updateUser(user: IUser) {
     if (user._id) {
       this.isUpdating = true;
       this.currentUserId = user._id;
       this.loadUserDetails(user._id);
     }
-  }
 
-  loadUserDetails(userId: string) {
-    this._userService.getUserById(userId).subscribe(
-      (user) => {
-        this.userForm.patchValue({
-          userName: user.username,
-          email: user.email,
-          password: '',
-          role: user.role
-        });
-      },
-      (error) => {
-        console.error('Error loading User details:', error);
-      }
-    );
   }
 
   onSubmit() {
@@ -110,7 +157,6 @@ export class UserListComponent implements OnInit {
     if (this.userForm.invalid) {
       return;
     }
-
     const user: IUser = {
       username: this.userForm.get('userName')?.value,
       email: this.userForm.get('email')?.value,
@@ -123,6 +169,7 @@ export class UserListComponent implements OnInit {
         (response: IUser) => {
           const index = this.userList.findIndex(u => u._id === this.currentUserId);
           this.userList[index] = response;
+
           Swal.fire({
             position: "center",
             icon: "success",
@@ -133,7 +180,7 @@ export class UserListComponent implements OnInit {
           this.resetForm();
         },
         error => {
-          console.log(error);
+          console.error(error);
         }
       );
     } else {
@@ -150,7 +197,7 @@ export class UserListComponent implements OnInit {
           this.resetForm();
         },
         error => {
-          console.log(error);
+          console.error(error);
         }
       );
     }
@@ -169,6 +216,5 @@ export class UserListComponent implements OnInit {
     const control = this.userForm.get(controlName);
     return (this.userForm.touched || this.submitted) && control?.hasError(errorName);
   }
-
 
 }

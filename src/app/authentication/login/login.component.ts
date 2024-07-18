@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors }
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/service/auth.service';
 import Swal from 'sweetalert2';
-// import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -45,23 +44,23 @@ export class LoginComponent implements OnInit {
     this._authService.login(email, password).subscribe(
       (response) => {
         this._router.navigate(['/home']);
-        // Swal.fire({
-        //   position: "center",
-        //   icon: "success",
-        //   title: "Logged in successfully",
-        //   showConfirmButton: false,
-        //   timer: 1500
-        // });
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Logged in successfully",
+          showConfirmButton: false,
+          timer: 1500
+        });
       },
       (err) => {
         console.error(err);
-        // Swal.fire({
-        //   position: "top-end",
-        //   icon: "error",
-        //   title: "Invalid login credentials",
-        //   showConfirmButton: false,
-        //   timer: 1500
-        // });
+        Swal.fire({
+          position: "top-end",
+          icon: "error",
+          title: "Invalid login credentials",
+          showConfirmButton: false,
+          timer: 1500
+        });
       }
     );
   }

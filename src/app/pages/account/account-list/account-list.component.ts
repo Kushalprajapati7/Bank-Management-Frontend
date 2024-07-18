@@ -34,17 +34,16 @@ export class AccountListComponent implements OnInit {
     private _fb: FormBuilder
   ) {
     this.columnDefs = [
-      { headerName: 'No.', valueGetter: "node.rowIndex+1" },
-      { headerName: 'Username', field:'AccountDetails.username'},
-      { headerName: 'Email', field:'AccountDetails.email'},
-      { headerName: 'Account Number', field:'AccountDetails.AccountNo'},
-      { headerName: 'Account Type', field:'AccountDetails.AccountType'},
-      { headerName: 'Balance', field:'AccountDetails.Balance',valueFormatter: this.currencyFormatter},
-      { headerName: 'Created Date', field:'AccountDetails.AccountCreatedDate',valueFormatter: this.dateFormatter }
+      { headerName: 'No.', valueGetter: "node.rowIndex+1",width: 100 },
+      { headerName: 'Username', field:'AccountDetails.username',width: 200},
+      { headerName: 'Email', field:'AccountDetails.email',width: 400},
+      { headerName: 'Account Number', field:'AccountDetails.AccountNo',width: 200},
+      { headerName: 'Account Type', field:'AccountDetails.AccountType',width: 200},
+      { headerName: 'Balance', field:'AccountDetails.Balance',valueFormatter: this.currencyFormatter,width: 200},
+      { headerName: 'Created Date', field:'AccountDetails.AccountCreatedDate',valueFormatter: this.dateFormatter,width: 300 }
     ];
 
     this.defaultColDef = {
-      flex: 1,
       minWidth: 100,
       filter: true,
       sortable: true,
@@ -100,7 +99,6 @@ export class AccountListComponent implements OnInit {
       (data) => {
         this.userAccountList.push(data);
         this.resetAccountForm();
-        // console.log(JSON.stringify(data, null, 4));
       }, (error) => {
         console.error();
       }
@@ -122,7 +120,6 @@ export class AccountListComponent implements OnInit {
       this._transactionService.allTransactionByAccountId(account._id).subscribe(
         (data) => {
           this.transactionPerAccount = data.sort();
-          console.log(JSON.stringify(data.sort(), null, 4));
         }, (error) => {
           console.error();
         }

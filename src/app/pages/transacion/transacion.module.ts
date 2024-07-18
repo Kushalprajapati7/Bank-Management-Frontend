@@ -3,13 +3,13 @@ import { CommonModule } from '@angular/common';
 
 import { TransacionRoutingModule } from './transacion-routing.module';
 import { AgGridAngular, AgGridModule } from 'ag-grid-angular';
-import { TrasnsactionAddComponent } from './trasnsaction-add/trasnsaction-add.component';
+import { TransactionListComponent } from './transaction-list/transaction-list.component';
 
 
 @NgModule({
   declarations: [
-    TrasnsactionAddComponent
-  ],
+    TransactionListComponent
+    ],
   imports: [
     CommonModule,
     TransacionRoutingModule,

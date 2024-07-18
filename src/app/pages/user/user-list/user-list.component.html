@@ -1,4 +1,4 @@
-<div class="container">
+<!-- <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-2">
         <h2 class="mt-4 mb-4">User List</h2>
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -36,22 +36,33 @@
             </tbody>
         </table>
     </div>
-</div>
-<!-- <div class="container">
-    <h2 class="mt-4 mb-4">User List</h2>
+</div> -->
+
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <h2 class="mt-4 mb-4">User List</h2>
+        <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <i class="fa-solid fa-plus"></i> Add New User
+        </button>
+
+    </div>
     <ag-grid-angular
       style="width: 100%; height: 500px;"
-      class="ag-theme-alpine"
+      [class]="themeClass"
       [rowData]="userList"
       [columnDefs]="columnDefs"
       [defaultColDef]="defaultColDef"
       [pagination]="true"
       [paginationPageSize]="10"
-      frameworkComponents="actionsRenderer"
+      [components]="frameworkComponents"
     >
     </ag-grid-angular>
   </div>
-   -->
+  
+ 
+  
+  <!-- Modal for adding/updating users -->
+  <!-- Include your modal markup here as per your original implementation -->
   
 
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -91,7 +102,7 @@
                         </select>
                         <div *ngIf="hasError('role', 'required')" class="text-danger">*Role is required</div>
                     </div>
-                    <button type="submit" class="btn btn-primary mt-4 w-100">Save</button>
+                    <button type="submit" class="btn btn-outline-info mt-4 w-100">Save</button>
                 </form>
             </div>
         </div>
